@@ -6,17 +6,17 @@ Run Go projects in nodejs and browser environments by way of WebAssembly.
 
 ```shell
 // pnpm
-pnpm add @cckim/go-wasmer
+pnpm add go-wasmer
 //yarn
-yarn add @cckim/go-wasmer
+yarn add go-wasmer
 // npm
-npm install @cckim/go-wasmer
+npm install go-wasmer
 ```
 
 ### Usage
 
 ```ts
-import { runWasm } from '@cckim/go-wasmer';
+import { runWasm } from 'go-wasmer';
 runWasm('./add.wasm', [1, 2])
   .then(res => console.log(res))
 // 3
