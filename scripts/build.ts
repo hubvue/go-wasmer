@@ -37,7 +37,7 @@ const cleanOldDist = async () => {
 }
 
 const cleanOtherDts = async (packageName) => {
-  const dtsPath = resolve(`dist/src`)
+  const dtsPath = resolve('dist/src')
   await Promise.all([cleanDir(dtsPath), cleanFile(`dist/${packageName}.d.ts`)])
   
 }
@@ -58,7 +58,7 @@ const generateBuildConfigs = (packageName) => {
     formatConfigs.push({
       packageName,
       config: {
-        input: resolve(`src/index.ts`),
+        input: resolve('src/index.ts'),
         output: {
           name: pascalCase(packageName),
           file: resolve(`dist/index.${format}.js`),
