@@ -8,3 +8,4 @@ api-extractor.json
 jest.config.ts
 tsconfig.json
 pnpm-lock.yaml
+global.d.ts
