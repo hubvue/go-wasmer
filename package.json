@@ -1,7 +1,7 @@
 {
-  "name": "repo-name",
-  "version": "0.0.1",
-  "description": "description",
+  "name": "@cckim/go-wasmer",
+  "version": "1.0.9",
+  "description": "Execution of go projects by wasm",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.js",
   "types": "./dist/index.d.ts",
@@ -13,11 +13,15 @@
     }
   },
   "keywords": [
-    ""
+    "go",
+    "wasm",
+    "execution",
+    "typescript",
+    "javascript"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hubvue/single-repo-starter.git"
+    "url": "git+https://github.com/hubvue/go-wasmer.git"
   },
   "bugs": {
     "url": "https://github.com/hubvue/signle-repo-starter/issues"
@@ -62,7 +66,10 @@
     "typescript": "^4.6.2",
     "zx": "^5.2.0"
   },
-  "homepage": "https://github.com/hubvue/single-repo-starter/tree/main#readme",
+  "homepage": "https://github.com/hubvue/go-wasmer/tree/main#readme",
   "author": "hubvue",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@cckim/utils": "^1.0.9"
+  }
 }

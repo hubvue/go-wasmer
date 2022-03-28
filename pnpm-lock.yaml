@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@cckim/utils': ^1.0.9
   '@microsoft/api-documenter': ^7.15.3
   '@microsoft/api-extractor': ^7.19.4
   '@types/jest': ^27.4.1
@@ -27,6 +28,9 @@ specifiers:
   typedoc-theme-category: ^1.0.7
   typescript: ^4.6.2
   zx: ^5.2.0
+
+dependencies:
+  '@cckim/utils': 1.0.9
 
 devDependencies:
   '@microsoft/api-documenter': 7.16.0
@@ -387,6 +391,10 @@ packages:
   /@bcoe/v8-coverage/0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
+
+  /@cckim/utils/1.0.9:
+    resolution: {integrity: sha512-gq+Doo85xmrbBcIs1nn1dMB7aHeaA1jmvb3CRagKedt58RRIYBGMLLHerliDU8Aw15Eo5NFh5Pm1XIKIDkPmqQ==}
+    dev: false
 
   /@cspotcode/source-map-consumer/0.8.0:
     resolution: {integrity: sha512-41qniHzTU8yAGbCp04ohlmSrZf8bkf/iJsl3V0dRGsQN/5GFfx+LbCSsCpp2gqrqjTVg/K6O8ycoV35JIwAzAg==}

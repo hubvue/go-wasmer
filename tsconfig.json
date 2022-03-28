@@ -24,6 +24,7 @@
     "out": "docs",
     "theme": "category"
   },
+  "files": [ "global.d.ts" ],
   "include": ["src"],
   "exclude": ["dist"]
 }

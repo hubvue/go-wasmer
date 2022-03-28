@@ -1,0 +1,10 @@
+__tests__/
+src/
+node_modules/
+internal/
+scripts/
+.npmignore
+api-extractor.json
+jest.config.ts
+tsconfig.json
+pnpm-lock.yaml
