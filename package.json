@@ -35,8 +35,7 @@
     "deploy": "esmo ./scripts/deploy.ts",
     "deploy:docs": "run-s docs deploy",
     "test:unit": "jest",
-    "test:dts": "echo 'test:dts'",
-    "test": "run-s test:unit test:dts"
+    "test": "run-s test:unit"
   },
   "devDependencies": {
     "@microsoft/api-documenter": "^7.15.3",
