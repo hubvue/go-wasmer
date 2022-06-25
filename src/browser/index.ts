@@ -1,5 +1,5 @@
-import { getCache, GoWasm, hasCache, setCache } from './cache'
-import { proxyLog } from './defineLog'
+import { getCache, GoWasm, hasCache, setCache } from '../utils/cache'
+import { proxyLog } from '../utils/defineLog'
 
 /**
  * @description Loading go applications via WebAssembly in a nodejs environment
@@ -11,7 +11,7 @@ export const runWasmInBrowser = async (
   wasmFilePath: string,
   args: unknown[] = []
 ) => {
-  const initGoWasm = await import('../internal/wasm_exec')
+  const initGoWasm = await import('../../internal/wasm_exec')
   initGoWasm.default()
   
   initWasmPolyfill()
@@ -44,7 +44,7 @@ export const runWasmInBrowser = async (
   ) // reset instance
   clear()
 
-  return res
+  return <string>res
 }
 
 const createBrowserGoWasm = (wasmFile: string): Promise<GoWasm | undefined> => {

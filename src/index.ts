@@ -1,6 +1,6 @@
 import { isBrowser } from '@cckim/utils'
-import { runWasmInNode } from './runWasmInNode'
-import { runWasmInBrowser } from './runWasmInBrowser'
+import { runWasmInNode } from './node'
+import { runWasmInBrowser } from './browser'
 
 export const runWasm = (wasmFilePath: string, args: unknown[] = []) => {
   if (isBrowser()) {
