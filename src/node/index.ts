@@ -1,5 +1,12 @@
-import { getCache, GoWasm, hasCache, setCache } from '../utils/cache'
-import { proxyLog } from '../utils/defineLog'
+import { fork } from 'child_process'
+import { resolve } from 'path'
+import { MessageType, ReceiveMessage, SendMessage } from './type'
+import { _dirname } from '../utils/dirname'
+
+/**
+ * @description initial worker
+ */
+
 
 /**
  * @description Loading go applications via WebAssembly in a nodejs environment
@@ -7,71 +14,61 @@ import { proxyLog } from '../utils/defineLog'
  * @param args
  * @returns
  */
-export const runWasmInNode = async (
-  wasmFilePath: string,
-  args: unknown[] = []
-) => {
-  const initEnv = await import('../../internal/wasm_node_init')
-  initEnv.default()
-  const initGoWasm = await import('../../internal/wasm_exec')
-  initGoWasm.default()
-  
-  let wasm: GoWasm | undefined
-
-  if (hasCache(wasmFilePath)) {
-    wasm = getCache(wasmFilePath)
-  } else {
-    wasm = await createNodeGoWasm(wasmFilePath)
-    if (wasm) {
-      setCache(wasmFilePath, wasm)
-    }
-  }
-
-  if (!wasm) {
-    console.warn('[Go Wasm]: WebAssembly file failed to load')
-    return
-  }
-
-  wasm.go.argv = [wasmFilePath, ...args]
-
-  let res: unknown
-  const clear = proxyLog((arg) => {
-    res = arg
-  })
-  await wasm.go.run(wasm.instance)
-  wasm.instance = await WebAssembly.instantiate(
-    wasm.module,
-    wasm.go.importObject
-  ) // reset instance
-  clear()
-  return res as string
-}
-
-
-const createNodeGoWasm = (wasmFilePath: string): Promise<GoWasm | undefined> => {
-  const fs = require('fs')
-  const go = new Go()
-  
-  go.env = Object.assign({ TMPDIR: require('os').tmpdir() }, process.env)
-  go.exit = process.exit
-
-  const wasmFile = fs.readFileSync(wasmFilePath)
-  return WebAssembly.instantiate(wasmFile, go.importObject)
-    .then(async (result) => {
-      process.on('exit', (code) => {
-        if (code === 0 && !go.exited) {
-          go._pendingEvent = { id: 0 }
-          go._resume()
+export const runWasmInNode = (wasmFilePath: string, args: unknown[] = []) => {
+  let timer: NodeJS.Timeout | null
+  const childProcess = fork(resolve(_dirname, './node/work.js'), [], { stdio: 'pipe'})
+  return new Promise((resolve, reject) => {
+    // exit
+    process.on('exit', () => {
+      if (childProcess.connected) {
+        childProcess.disconnect()
+        if (!childProcess.killed) {
+          childProcess.kill()
         }
-      })
-      return {
-        go,
-        module: result.module,
-        instance: result.instance
       }
     })
-    .catch((err) => {
-      console.log(`[Go Wasm]: ${err}`)
-      return undefined
+    // listening stdout data
+    childProcess.stdout?.on('data', (data) => {
+      timer = setTimeout(() => {
+        resolve(data.toString())
+      }, 10)
     })
+    // listening stderr data
+    childProcess.stderr?.on('data', (data) =>{
+      if (timer) {
+        clearTimeout(timer)
+      }
+      reject(data.toString())
+    })
+    // error
+    childProcess.on('error', (err) => {
+      if (err) {
+        reject(err)
+      }
+    })
+    // message
+    childProcess.on('message', (data: ReceiveMessage) => {
+      switch (data.type) {
+        case MessageType.Error:
+          reject(data.message)
+          break
+        case MessageType.Message:
+          resolve(data.message)
+          break
+        default:
+          resolve(data.message)
+      }
+    })
+
+    const message: SendMessage = {
+      wasmFile: wasmFilePath,
+      args
+    }
+    childProcess.send(message, (err) => {
+      if (err) {
+        reject(err)
+      }
+    })
+  })
 }
+
